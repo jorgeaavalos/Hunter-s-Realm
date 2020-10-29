@@ -1,5 +1,4 @@
-const { admin, fs } = require("./admin");
-
+const { admin, db } = require("./admin");
 
 module.exports = (req, res, next) => {
   let idToken;
@@ -12,23 +11,23 @@ module.exports = (req, res, next) => {
     console.error("No token found for user");
     return res.status(400).json({ error: "Unauthorized" });
   }
-  console.log("Token has been found");
+
 
   admin
     .auth()
     .verifyIdToken(idToken)
     .then((decodedToken) => {
       req.user = decodedToken;
-      console.log(decodedToken);
-      return fs
+      return db
         .collection("users")
         .where("userUid", "==", req.user.uid)
         .limit(1)
         .get();
     })
     .then((data) => {
-      console.log(data);
       req.user.userName = data.docs[0].data().userName;
+      
+      req.user.imageUrl = data.docs[0].data().imageUrl;
       return next();
     })
     .catch((err) => {

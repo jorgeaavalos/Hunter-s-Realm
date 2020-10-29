@@ -1,6 +1,5 @@
 const emailRegEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-
 const isEmpty = (string) => {
   if (string.trim() === "") {
     return true;
@@ -15,6 +14,7 @@ const isEmail = (email) => {
 
 exports.validateSignUp = (newUser) => {
   let errors = {};
+  console.log(newUser);
   if (isEmpty(newUser.email)) {
     errors.email = "Must must not be empty!";
   } else if (!isEmail(newUser.email)) {
@@ -27,15 +27,13 @@ exports.validateSignUp = (newUser) => {
   if (isEmpty(newUser.userName)) errors.userName = "Username cannot be empty";
 
   if (Object.keys(errors).length > 0) return res.status(400).json(errors);
-    return {
-      errors,
-      valid: Object.keys(errors).length === 0 ? true : false
-    };
-
+  return {
+    errors,
+    valid: Object.keys(errors).length === 0 ? true : false,
+  };
 };
 
 exports.validateLogin = (user) => {
-    
   let errors = {};
   if (isEmpty(user.email)) {
     errors.email = "Must must not be empty!";
@@ -47,10 +45,26 @@ exports.validateLogin = (user) => {
 
   if (Object.keys(errors).length > 0) return res.status(400).json(errors);
 
-    return {
-      errors,
-      valid: Object.keys(errors).length === 0 ? true : false
-    };
+  return {
+    errors,
+    valid: Object.keys(errors).length === 0 ? true : false,
+  };
+};
 
+exports.reduceUserDetails = (data) => {
+  let userDetails = {};
 
-}
+  console.log(data);
+
+  if (!isEmpty(data.bio.trim())) {
+    userDetails.bio = data.bio;
+  }
+  if (!isEmpty(data.website.trim())) {
+    if (data.website.trim().substring(0, 4) !== "http") {
+      userDetails.website = `http://${data.website.trim()}`;
+    } else userDetails.website = data.website;
+  }
+  if (!isEmpty(data.location.trim())) userDetails.location = data.location;
+
+  return userDetails;
+};
