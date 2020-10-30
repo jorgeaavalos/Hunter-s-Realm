@@ -15,6 +15,7 @@ exports.getAllScreams = (req, res) => {
           createdOn: doc.data().createdOn,
           commentCount: doc.data().commentCount,
           likeCount: doc.data().likeCount,
+          imageUrl: doc.data().imageUrl,
         });
       });
       return res.json(screams);
@@ -32,7 +33,7 @@ exports.postScream = (req, res) => {
   const newScream = {
     body: req.body.body,
     userName: req.user.userName,
-    userImageUrl: req.user.imageUrl,
+    imageUrl: req.user.imageUrl,
     createdOn: new Date().toISOString(),
     likeCount: 0,
     commentCount: 0,
@@ -85,7 +86,7 @@ exports.getScream = (req, res) => {
 
 exports.commentScream = (req, res) => {
   if (req.body.body.trim() === "") {
-    return res.status(400).json({ error: "Comment must not be empty" });
+    return res.status(400).json({ comment: "Comment must not be empty" });
   }
   console.log(req.user.imageUrl);
 
@@ -94,18 +95,20 @@ exports.commentScream = (req, res) => {
     createdOn: new Date().toISOString(),
     screamId: req.params.screamId,
     userName: req.user.userName,
-    userImageUrl: req.user.imageUrl,
+    imageUrl: req.user.imageUrl,
   };
   var screamId = req.params.screamId.trim();
-  console.log(screamId);
   db.doc(`/screams/${screamId}`)
     .get()
     .then((doc) => {
       if (!doc.exists) {
         return res.status(404).json({ Error: "The scream does not exist" });
       } else {
-        return db.collection("comments").add(newComment);
+        return doc.ref.update({ commentCount: doc.data().commentCount + 1 });
       }
+    })
+    .then(() => {
+      return db.collection("comments").add(newComment);
     })
     .then(() => {
       return res.json(newComment);
