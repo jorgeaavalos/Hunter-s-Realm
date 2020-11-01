@@ -22,7 +22,7 @@ class home extends Component {
   render() {
     let recentScreams = this.state.screams ? (
       this.state.screams.map((scream) => {
-        return <Scream scream={scream} />;
+        return <Scream key={scream.screamId} scream={scream} />;
       })
     ) : (
       <p>Loading Screams</p>

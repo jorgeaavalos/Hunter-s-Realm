@@ -13,16 +13,16 @@ import Navbar from "./components/navBar";
 const theme = createMuiTheme({
   palette: {
     primary: {
-      light: "#2c2c2c",
-      main: "#000000",
+      light: "#484848",
+      main: "#212121",
       dark: "#000000",
-      contrastText: "white",
+      contrastText: "#FFFFFF",
     },
     secondary: {
-      light: "#2c2c2c",
-      main: "#FFFFFF",
-      dark: "#000000",
-      contrastText: "white",
+      light: "#cfcfcf",
+      main: "#9e9e9e",
+      dark: "#707070",
+      contrastText: "#FFFFFF",
     },
   },
 });
@@ -33,10 +33,10 @@ class App extends Component {
   render() {
     return (
       <MuiThemeProvider theme={theme}>
-        <div className="App">
+        <div id="component-container" className="App">
           <Router>
             <Navbar />
-            <div className="container" color="primary">
+            <div color="Primary">
               <Switch>
                 <Route exact path="/" component={home} />
                 <Route exact path="/home" component={home} />

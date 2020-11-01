@@ -72,6 +72,7 @@ exports.userLogin = (req, res) => {
   };
 
   const { valid, errors } = validateLogin(user);
+  console.log(errors)
   if (!valid) return res.status(400).json(errors);
 
   firebase
@@ -86,7 +87,7 @@ exports.userLogin = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.code === "auth/wrong-password") {
-        return res.status(403).json({ general: "Wrong Password" });
+        return res.status(403).json({ general: "Wrong Credentials" });
       } else {
         return res.status(500).json({ error: err.code });
       }

@@ -7,10 +7,6 @@ const isEmpty = (string) => {
     return false;
   }
 };
-const isEmail = (email) => {
-  if (email.match(emailRegEx)) return true;
-  else return false;
-};
 
 exports.validateSignUp = (newUser) => {
   let errors = {};
@@ -33,7 +29,14 @@ exports.validateSignUp = (newUser) => {
   };
 };
 
+const isEmail = (email) => {
+  if (email.match(emailRegEx)) return true;
+  else return false;
+};
+
 exports.validateLogin = (user) => {
+
+  console.log(user.password)
   let errors = {};
   if (isEmpty(user.email)) {
     errors.email = "Must must not be empty!";
@@ -41,9 +44,14 @@ exports.validateLogin = (user) => {
     errors.email = "Must be a valid email address!";
   }
 
-  if (isEmpty(user.password)) errors.password = "Must not be empty.";
+  if (isEmpty(user.password)) {
+    
+    errors.password = "Must not be empty.";
+  }
 
-  if (Object.keys(errors).length > 0) return res.status(400).json(errors);
+  // if (Object.keys(errors).length > 0) {
+  //   return res.status(400).json(errors);
+  // }
 
   return {
     errors,
