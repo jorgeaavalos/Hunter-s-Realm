@@ -6,44 +6,17 @@ import AppIcon from "../assets/images/huntLogo.png";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import PropTypes from "prop-types";
-import axios from "axios";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { Link } from "react-router-dom";
 
+import { connect } from "react-redux";
+import { signUpUser } from "../redux/actions/userAction";
+//take this an use it as global in muithemebuilder
+
 const useStyles = (theme) => ({
-  loginForm: {
-    textAlign: "center",
-    contentAlign: "center",
-  },
-  pageTitle: {
-    textAlign: "left",
-    fontFamily: "Raleway",
-    fontWeight: 400,
-  },
-  loginIcon: {
-    margin: 10,
-  },
-  textField: {
-    fontFamily: "Arial",
-    color: "white",
-    width: "200x",
-  },
-  loginButton: {
-    position: "relative",
-    marginTop: 20,
-  },
-  generalError: {
-    color: "#FF0000",
-  },
-  progressBar: {
-    postition: "absolute",
-  },
-  inputArea: {
-    backgroundColor: "rgba(0, 0, 0, 0.6); ",
-    borderRadius: 10,
-    padding: "10px 10px 30px 10px",
-  },
+  ...theme.spread,
 });
+
 class signUp extends Component {
   constructor() {
     super();
@@ -59,33 +32,21 @@ class signUp extends Component {
       },
     };
   }
-
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.ui.errors) {
+      this.setState({ errors: nextProps.ui.errors });
+    }
+  }
   handleSubmit = (event) => {
     event.preventDefault();
-    this.setState({
-      loading: true,
-    });
-    const userData = {
+    const newUserData = {
       email: this.state.email,
       password: this.state.password,
+      confirmPassword: this.state.confirmPassword,
+      userName: this.state.userName,
     };
-
-    axios
-      .post("/login", userData)
-      .then((res) => {
-        this.setState({
-          loading: false,
-        });
-        this.props.history.push("/");
-      })
-      .catch((err) => {
-        this.setState({
-          errors: err.response.data,
-          loading: false,
-        });
-      });
+    this.props.signUpUser(newUserData, this.props.history);
   };
-
   handleChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value,
@@ -137,7 +98,7 @@ class signUp extends Component {
                 label="Username"
                 helperText={this.state.errors.email}
                 error={this.state.errors.email ? true : false}
-                value={this.state.email}
+                value={this.state.userName}
                 onChange={this.handleChange}
                 fullWidth
               ></TextField>
@@ -176,7 +137,7 @@ class signUp extends Component {
                 type="password"
                 helperText={this.state.errors.password}
                 error={this.state.errors.password ? true : false}
-                value={this.state.password}
+                value={this.state.confirmPassword}
                 onChange={this.handleChange}
                 fullWidth
                 variant="standard"
@@ -216,6 +177,19 @@ class signUp extends Component {
 
 signUp.propTypes = {
   classes: PropTypes.object.isRequired,
+  signUpUser: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
+  ui: PropTypes.object.isRequired,
 };
 
-export default withStyles(useStyles)(signUp);
+const maptoStatetoProps = (state) => ({
+  user: state.user,
+  ui: state.ui,
+});
+const mapActionsToProps = {
+  signUpUser,
+};
+export default connect(
+  maptoStatetoProps,
+  mapActionsToProps
+)(withStyles(useStyles)(signUp));

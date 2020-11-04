@@ -72,7 +72,7 @@ exports.userLogin = (req, res) => {
   };
 
   const { valid, errors } = validateLogin(user);
-  console.log(errors)
+
   if (!valid) return res.status(400).json(errors);
 
   firebase
@@ -155,6 +155,10 @@ exports.getAuthUser = (req, res) => {
       return res.status(500).json({ error: err.code });
     });
 };
+
+
+
+
 
 exports.uploadImage = (req, res) => {
   BusBoy = require("busboy");

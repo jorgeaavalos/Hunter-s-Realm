@@ -22,7 +22,7 @@ exports.validateSignUp = (newUser) => {
     errors.password = "Passwords must Match";
   if (isEmpty(newUser.userName)) errors.userName = "Username cannot be empty";
 
-  if (Object.keys(errors).length > 0) return res.status(400).json(errors);
+  // if (Object.keys(errors).length > 0) return res.status(400).json(errors);
   return {
     errors,
     valid: Object.keys(errors).length === 0 ? true : false,
@@ -36,7 +36,6 @@ const isEmail = (email) => {
 
 exports.validateLogin = (user) => {
 
-  console.log(user.password)
   let errors = {};
   if (isEmpty(user.email)) {
     errors.email = "Must must not be empty!";

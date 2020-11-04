@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import { withStyles } from "@material-ui/styles";
@@ -22,7 +20,7 @@ const useStyles = (theme) => ({
   },
   content: {
     padding: 20,
-    width:'suto',
+    width: "auto",
     objectFit: "cover",
     color: theme.palette.primary.contrastText,
   },
@@ -49,9 +47,6 @@ const useStyles = (theme) => ({
   },
 });
 
-
-
-
 export class Scream extends Component {
   render() {
     const {
@@ -60,12 +55,13 @@ export class Scream extends Component {
         createdOn,
         imageUrl,
         userName,
-        screamId,
-        likeCount,
-        commentCount,
+        // screamId,
+        // likeCount,
+        // commentCount,
       },
     } = this.props;
     const { classes } = this.props;
+
 
     return (
       <Card className={classes.card}>

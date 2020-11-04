@@ -6,45 +6,15 @@ import AppIcon from "../assets/images/huntLogo.png";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import PropTypes from "prop-types";
-import axios from "axios";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { Link } from "react-router-dom";
 
-const useStyles = (theme) => ({
-  loginForm: {
-    textAlign: "center",
-    contentAlign: "center",
-  },
-  pageTitle: {
-    textAlign: "left",
-    fontFamily: "Raleway",
-    fontWeight: 400,
-  },
-  loginIcon: {
-    margin: 10,
-  },
-  textField: {
-    fontFamily: "Arial",
-    color: "white",
-    width: "200x",
-  },
-  loginButton: {
-    position: "relative",
-    marginTop: 20,
-  },
-  generalError: {
-    color: "#FF0000",
-  },
-  progressBar: {
-    postition: "absolute",
-  },
-  inputArea: {
-    backgroundColor: "rgba(0, 0, 0, 0.6); ",
-    borderRadius: 10,
-    padding: "10px 10px 30px 10px",
-  },
-});
+import { connect } from "react-redux";
+import { loginUser } from "../redux/actions/userAction";
 
+const useStyles = (theme) => ({
+  ...theme.spread,
+});
 class login extends Component {
   constructor() {
     super();
@@ -58,30 +28,18 @@ class login extends Component {
       },
     };
   }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.ui.errors) {
+      this.setState({ errors: nextProps.ui.errors });
+    }
+  }
   handleSubmit = (event) => {
     event.preventDefault();
-    this.setState({
-      loading: true,
-    });
     const userData = {
       email: this.state.email,
       password: this.state.password,
     };
-
-    axios
-      .post("/login", userData)
-      .then((res) => {
-        this.setState({
-          loading: false,
-        });
-        this.props.history.push("/");
-      })
-      .catch((err) => {
-        this.setState({
-          errors: err.response.data,
-          loading: false,
-        });
-      });
+    this.props.loginUser(userData, this.props.history);
   };
 
   handleChange = (event) => {
@@ -176,5 +134,19 @@ class login extends Component {
 
 login.propTypes = {
   classes: PropTypes.object.isRequired,
+  loginUser: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
+  ui: PropTypes.object.isRequired,
+  logoutser: PropTypes.func.isRequired,
 };
-export default withStyles(useStyles)(login);
+const maptoStatetoProps = (state) => ({
+  user: state.user,
+  ui: state.ui,
+});
+const mapActionsToProps = {
+  loginUser,
+};
+export default connect(
+  maptoStatetoProps,
+  mapActionsToProps
+)(withStyles(useStyles)(login));
