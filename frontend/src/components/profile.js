@@ -12,6 +12,10 @@ import CalenderToday from "@material-ui/icons/CalendarToday";
 import KeyboardReturn from "@material-ui/icons/KeyboardReturn";
 import MuiLink from "@material-ui/core/Link";
 import { logoutUser, uploadImage } from "../redux/actions/userAction";
+import EditDetails from "./EditDetails";
+import MyButton from "../utils/MyButton";
+
+
 var relativeTime = require("dayjs/plugin/relativeTime");
 dayjs.extend(relativeTime);
 const link = require("react-router-dom").Link;
@@ -83,7 +87,6 @@ export class Profile extends Component {
   };
   render() {
     const { classes } = this.props;
-    console.log(this.props);
     const {
       user: {
         credentials: { userName, bio, website, location, imageUrl, createdOn },
@@ -147,14 +150,14 @@ export class Profile extends Component {
               <CalenderToday /> {"  "}
               <span>Joined {dayjs(createdOn).format("DD/MM/YYYY")}</span>
             </div>
-            <Tooltip title="Logout" placement="right">
-              <IconButton
-                onClick={this.handleLogout}
-                className={classes.buttons}
-              >
+
+
+
+              <MyButton tip="Logout" onClick={this.handleLogout}>
                 <KeyboardReturn></KeyboardReturn>
-              </IconButton>
-            </Tooltip>
+              </MyButton>
+            
+            <EditDetails></EditDetails>
           </div>
         </Paper>
       ) : (

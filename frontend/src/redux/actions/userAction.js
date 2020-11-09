@@ -26,6 +26,18 @@ export const loginUser = (userData, history) => (dispatch) => {
     });
 };
 
+export const editUserDetails = (userDetails) => (dispatch) => {
+  dispatch({ type: LOADING_USER });
+  axios
+    .post("/user", userDetails)
+    .then((res) => {
+      dispatch(getUserData());
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 export const signUpUser = (newUserData, history) => (dispatch) => {
   dispatch({ type: LOADING_USER });
   axios

@@ -208,7 +208,6 @@ exports.likeScream = (req, res) => {
 };
 
 exports.deleteScream = (req, res) => {
-  console.log("Hello");
   const screamDocument = db.doc(`/screams/${req.params.screamId}`);
   screamDocument
     .get()

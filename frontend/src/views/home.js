@@ -3,26 +3,16 @@ import React, { Component } from "react";
 import axios from "axios";
 import Scream from "../components/scream";
 import Profile from "../components/profile";
+import { connect } from "react-redux";
+import { getScreams } from "../redux/actions/dataAction";
 class home extends Component {
-  state = {
-    screams: null,
-  };
-
   componentDidMount() {
-    axios
-      .get("/scream")
-      .then((res) => {
-        this.setState({
-          screams: res.data,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    this.props.getScreams();
   }
   render() {
-    let recentScreams = this.state.screams ? (
-      this.state.screams.map((scream) => {
+    const { screams, loading } = this.props.data;
+    let recentScreams = !loading ? (
+      screams.map((scream) => {
         return <Scream key={scream.screamId} scream={scream} />;
       })
     ) : (
@@ -42,4 +32,8 @@ class home extends Component {
   }
 }
 
-export default home;
+const mapStateToProps = (state) => ({
+  data: state.data,
+});
+
+export default connect(mapStateToProps, { getScreams })(home);

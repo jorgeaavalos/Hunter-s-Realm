@@ -1,16 +1,43 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from "react";
 import "../App.css";
 
-import AppBar from '@material-ui/core/AppBar'
+import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
-const Link = require('react-router-dom').Link;
- class navBar extends Component {
-    render() {
-        return (
-          <AppBar>
-            <Toolbar className="nav-container">
-              <Button component={Link} to="/" color="inherit" >
+import MyButton from "../utils/MyButton";
+import { connect } from "react-redux";
+import AddIcon from "@material-ui/icons/Add";
+import HomeIcon from "@material-ui/icons/Home";
+import NotificationsIcon from "@material-ui/icons/Notifications";
+import withStyles from "@material-ui/styles/withStyles";
+const Link = require("react-router-dom").Link;
+
+const useStyles = (theme) => ({
+  ...theme.spread,
+});
+
+class navBar extends Component {
+  render() {
+    const { auth } = this.props;
+
+    return (
+      <AppBar>
+        <Toolbar className="nav-container">
+          {auth ? (
+            <Fragment>
+              <MyButton tip="Home">
+                <HomeIcon></HomeIcon>
+              </MyButton>
+              <MyButton tip={"Post a scream"}>
+                <AddIcon></AddIcon>
+              </MyButton>
+              <MyButton tip="Notifications">
+                <NotificationsIcon></NotificationsIcon>
+              </MyButton>
+            </Fragment>
+          ) : (
+            <Fragment>
+              <Button component={Link} to="/" color="inherit">
                 Home
               </Button>
               <Button component={Link} to="/login" color="inherit">
@@ -19,10 +46,15 @@ const Link = require('react-router-dom').Link;
               <Button component={Link} to="/signup" color="inherit">
                 SignUp
               </Button>
-            </Toolbar>
-          </AppBar>
-        );
-    }
+            </Fragment>
+          )}
+        </Toolbar>
+      </AppBar>
+    );
+  }
 }
+const maptoStatetoProps = (state) => ({
+  auth: state.user.auth,
+});
 
-export default navBar
+export default connect(maptoStatetoProps)(withStyles(useStyles)(navBar));

@@ -3,6 +3,8 @@ import {
   LOADING_USER,
   SET_AUTHENTICATED,
   SET_UNAUTHENTICATED,
+  LIKE_SCREAM,
+  UNLIKE_SCREAM,
 } from "../types";
 
 const initialState = {
@@ -33,6 +35,24 @@ export default function (state = initialState, action) {
       return {
         ...state,
         loading: true,
+      };
+    case LIKE_SCREAM:
+      return {
+        ...state,
+        likes: [
+          ...state.likes,
+          {
+            userName: state.credentials.userName,
+            screamId: action.payload.screamId,
+          },
+        ],
+      };
+    case UNLIKE_SCREAM:
+      return {
+        ...state,
+        likes: state.likes.filter(
+          (like) => like.screamId !== action.payload.screamId
+        ),
       };
 
     default:
