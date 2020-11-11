@@ -40,22 +40,20 @@ class App extends Component {
         <Provider store={store}>
           <div id="component-container" className="App">
             <Router>
-              <Navbar />
+              <Navbar/>
               <div color="Primary">
                 <Switch>
-                  <Route exact path="/" component={home} />
-                  <Route exact path="/home" component={home} />
+                  <Route exact path="/" component={home}/>
+                  <Route exact path="/home" component={home}/>
                   <AuthRoute
                     exact
                     path="/login"
                     component={login}
-                  
                   />
                   <AuthRoute
                     exact
                     path="/signup"
-                    component={signUp}
-                    
+                    component={signUp}                    
                   />
                 </Switch>
               </div>

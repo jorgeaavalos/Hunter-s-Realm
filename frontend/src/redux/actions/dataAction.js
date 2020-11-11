@@ -6,6 +6,7 @@ import {
   SET_ERRORS,
   COMMENT_SCREAM,
   DELETE_SCREAM,
+  POST_SCREAM,
 } from "../types";
 import axios from "axios";
 
@@ -30,6 +31,7 @@ export const likeScream = (screamId) => (dispatch) => {
   axios
     .get(`/scream/${screamId}/like`)
     .then((res) => {
+      console.log(res.data);
       dispatch({
         type: LIKE_SCREAM,
         payload: res.data,
@@ -76,24 +78,44 @@ export const deleteScream = (screamId, userName) => (dispatch) => {
       });
     });
 };
+export const postScream = (newScream) => (dispatch) => {
+  axios
+    .post(`/scream/`, newScream)
+    .then((res) => {
+      dispatch({
+        type: POST_SCREAM,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
-// export const commentScream = (screamId) => (dispatch) => {
+export const commentScream = (screamId, comment) => (dispatch) => {
+  axios
+    .post(`/scream/${screamId}/comment`, comment)
+    .then((res) => {
+      dispatch({
+        type: COMMENT_SCREAM,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+// export const uploadImage = (formData) => (dispatch) => {
+//   dispatch({ type: LOADING_USER });
 //   axios
-//     .post(`/scream/${screamId}/comment`)
-//     .then((res) => {
-//       dispatch({
-//         type: COMMENT_SCREAM,
-//         payload: res.data,
-//       });
+//     .post("/user/image", formData)
+//     .then(() => {
+//       dispatch(getUserData());
 //     })
 //     .catch((err) => {
-//       dispatch({
-//         type: SET_ERRORS,
-//         payload: [],
-//       });
+//       console.log(err);
 //     });
 // };
-
 // app.get("/scream/:screamId/", getScream);
-// app.delete("/scream/:screamId/", FBAuth, deleteScream);
 // app.post("/scream/:screamId/comment", FBAuth, commentScream);

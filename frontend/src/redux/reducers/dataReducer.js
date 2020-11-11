@@ -1,3 +1,4 @@
+import scream from "../../components/scream";
 import {
   SET_SCREAMS,
   LIKE_SCREAM,
@@ -5,6 +6,7 @@ import {
   LOADING_DATA,
   COMMENT_SCREAM,
   DELETE_SCREAM,
+  POST_SCREAM,
 } from "../types";
 
 const initialState = {
@@ -52,16 +54,29 @@ export default function (state = initialState, action) {
           scream.screamId !== action.payload.screamId ||
           scream.userName !== action.payload.userName
       );
-      console.log(state.screams);
+      return {
+        ...state,
+      };
+
+    case COMMENT_SCREAM:
+      let commentIndex = state.screams.findIndex(
+        (scream) => scream.screamId === action.payload.screamId
+      );
+      let commentScream = state.screams[commentIndex];
+      commentScream.commentCount += 1;
+      state.screams[commentIndex] = commentScream;
 
       return {
         ...state,
       };
 
+    case POST_SCREAM:
+      return {
+        ...state,
+        // screams: [action.payload, ...screams],
+      };
+
     default:
       return state;
-
-    // case COMMENT_SCREAM:
-    //   return {};
   }
 }

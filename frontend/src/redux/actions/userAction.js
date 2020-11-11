@@ -40,6 +40,7 @@ export const editUserDetails = (userDetails) => (dispatch) => {
 
 export const signUpUser = (newUserData, history) => (dispatch) => {
   dispatch({ type: LOADING_USER });
+  console.log(newUserData)
   axios
     .post("/signup", newUserData)
     .then((res) => {
