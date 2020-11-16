@@ -7,7 +7,11 @@ import {
   COMMENT_SCREAM,
   DELETE_SCREAM,
   POST_SCREAM,
+  SET_SCREAM,
+  LOADING_UI,
+  STOP_LOADING_UI,
 } from "../types";
+
 import axios from "axios";
 
 export const getScreams = () => (dispatch) => {
@@ -106,16 +110,36 @@ export const commentScream = (screamId, comment) => (dispatch) => {
     });
 };
 
-// export const uploadImage = (formData) => (dispatch) => {
-//   dispatch({ type: LOADING_USER });
-//   axios
-//     .post("/user/image", formData)
-//     .then(() => {
-//       dispatch(getUserData());
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     });
-// };
-// app.get("/scream/:screamId/", getScream);
-// app.post("/scream/:screamId/comment", FBAuth, commentScream);
+export const getScream = (screamId) => (dispatch) => {
+  dispatch({ type: LOADING_UI });
+  axios
+    .get(`/scream/${screamId}`)
+    .then((res) => {
+      dispatch({
+        type: SET_SCREAM,
+        payload: res.data,
+      });
+      dispatch({ type: STOP_LOADING_UI });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+export const getUserData = (userName) => (dispatch) => {
+  dispatch({ type: LOADING_DATA });
+  axios
+    .get(`/user/${userName}`)
+    .then((res) => {
+      dispatch({
+        type: SET_SCREAMS,
+        payload: res.data.screams,
+      });
+    })
+    .catch((err) => {
+      dispatch({
+        type: SET_SCREAMS,
+        payload: null,
+      });
+    });
+};

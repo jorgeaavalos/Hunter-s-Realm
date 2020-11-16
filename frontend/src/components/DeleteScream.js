@@ -42,7 +42,7 @@ class DeleteDialogue extends Component {
     const { classes } = this.props;
     return (
       <Fragment>
-        <Tooltip title="Delete Scream" placement="bottomx">
+        <Tooltip title="Delete Scream" placement="bottom">
           <IconButton onClick={this.handleOpen} className={classes.button}>
             <DeleteIcon></DeleteIcon>
           </IconButton>

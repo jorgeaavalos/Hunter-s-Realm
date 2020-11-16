@@ -14,6 +14,7 @@ import { likeScream, unlikeScream } from "../redux/actions/dataAction";
 import DeleteIcon from "@material-ui/icons/Delete";
 import DeleteDialogue from "./DeleteScream";
 import CommentScream from "./CommentScream";
+import ScreamDetails from "./ScreamDetails";
 const Link = require("react-router-dom").Link;
 
 var relativeTime = require("dayjs/plugin/relativeTime");
@@ -142,20 +143,28 @@ export class Scream extends Component {
       </Fragment>
     );
 
+    const expandButton = !auth ? (
+      ""
+    ) : (
+      <Fragment>
+        <ScreamDetails screamId={this.props.scream.screamId}></ScreamDetails>
+      </Fragment>
+    );
+
     return (
       <Card className={classes.card}>
         <CardMedia
           image={imageUrl}
           title="Profile Image"
           component={link}
-          to={`/scream/${userName}`}
+          to={`/user/${userName}`}
           className={classes.userImage}
         />
         <CardContent className={classes.content}>
           <Typography
             className={classes.userName}
             component={link}
-            to={`/scream/${userName}`}
+            to={`/user/${userName}`}
           >
             {userName}
           </Typography>
@@ -168,6 +177,7 @@ export class Scream extends Component {
             {likeButton}
             {deleteButton}
             {commentButton}
+            {expandButton}
           </Typography>
         </CardContent>
       </Card>

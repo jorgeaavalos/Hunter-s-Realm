@@ -10,6 +10,8 @@ import AddIcon from "@material-ui/icons/Add";
 import HomeIcon from "@material-ui/icons/Home";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import withStyles from "@material-ui/styles/withStyles";
+import PostScream from "./PostScream";
+
 const Link = require("react-router-dom").Link;
 
 const useStyles = (theme) => ({
@@ -25,12 +27,12 @@ class navBar extends Component {
         <Toolbar className="nav-container">
           {auth ? (
             <Fragment>
-              <MyButton tip="Home">
-                <HomeIcon></HomeIcon>
-              </MyButton>
-              <MyButton tip={"Post a scream"}>
-                <AddIcon></AddIcon>
-              </MyButton>
+              <Link to="/">
+                <MyButton tip="Home">
+                  <HomeIcon />
+                </MyButton>
+              </Link>
+              <PostScream></PostScream>
               <MyButton tip="Notifications">
                 <NotificationsIcon></NotificationsIcon>
               </MyButton>

@@ -79,11 +79,12 @@ class CommentScream extends Component {
                 onChange={this.handleChange}
                 fullWidth
               ></TextField>
+
+              <DialogActions>
+                <Button onClick={this.handleClose}>Cancel</Button>
+                <Button onClick={this.handleSubmit}>Comment</Button>
+              </DialogActions>
             </form>
-            <DialogActions>
-              <Button onClick={this.handleClose}>Cancel</Button>
-              <Button onClick={this.handleSubmit}>Comment</Button>
-            </DialogActions>
           </DialogContent>
         </Dialog>
       </Fragment>
@@ -93,7 +94,7 @@ class CommentScream extends Component {
 
 const mapStateToProps = (state) => ({
   credentials: state.user.credentials,
-  screams: state.screams
+  screams: state.screams,
 });
 
 export default connect(mapStateToProps, { commentScream })(

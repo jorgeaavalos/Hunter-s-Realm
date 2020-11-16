@@ -7,6 +7,7 @@ import {
   COMMENT_SCREAM,
   DELETE_SCREAM,
   POST_SCREAM,
+  SET_SCREAM,
 } from "../types";
 
 const initialState = {
@@ -73,7 +74,13 @@ export default function (state = initialState, action) {
     case POST_SCREAM:
       return {
         ...state,
-        // screams: [action.payload, ...screams],
+        screams: [action.payload, ...state.screams],
+      };
+
+    case SET_SCREAM:
+      return {
+        ...state,
+        scream: action.payload,
       };
 
     default:

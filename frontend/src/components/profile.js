@@ -15,7 +15,6 @@ import { logoutUser, uploadImage } from "../redux/actions/userAction";
 import EditDetails from "./EditDetails";
 import MyButton from "../utils/MyButton";
 
-
 var relativeTime = require("dayjs/plugin/relativeTime");
 dayjs.extend(relativeTime);
 const link = require("react-router-dom").Link;
@@ -151,12 +150,10 @@ export class Profile extends Component {
               <span>Joined {dayjs(createdOn).format("DD/MM/YYYY")}</span>
             </div>
 
+            <MyButton tip="Logout" onClick={this.handleLogout}>
+              <KeyboardReturn></KeyboardReturn>
+            </MyButton>
 
-
-              <MyButton tip="Logout" onClick={this.handleLogout}>
-                <KeyboardReturn></KeyboardReturn>
-              </MyButton>
-            
             <EditDetails></EditDetails>
           </div>
         </Paper>

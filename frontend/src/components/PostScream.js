@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
 
 import { connect } from "react-redux";
-import { postScream } from "../redux/actions/userAction";
+import { postScream } from "../redux/actions/dataAction";
 
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -12,10 +12,12 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import EditIcon from "@material-ui/icons/Edit";
 import Tooltip from "@material-ui/core/Tooltip";
-import CloseButton from "@material-ui/icons/Close";
-import CirclarProgress from "@material-ui/core/CircularProgress";
+import AddIcon from "@material-ui/icons/Add";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import CloseIcon from "@material-ui/icons/Close";
 import MyButton from "../utils/MyButton";
 import theme from "../utils/theme";
+
 const useStyles = (theme) => ({
   ...theme.spread,
   button: {
@@ -37,6 +39,17 @@ class PostScream extends Component {
   handleClose = () => {
     this.setState({ open: false });
   };
+
+  handleSubmit = (event) => {
+    event.preventDefault();
+    this.props.postScream({ body: this.state.body });
+    this.handleClose();
+  };
+  handleChange = (event) => {
+    this.setState({
+      [event.target.name]: event.target.value,
+    });
+  };
   render() {
     const { errors } = this.state;
     const {
@@ -51,50 +64,59 @@ class PostScream extends Component {
         </MyButton>
         <Dialog
           open={this.state.open}
-          onClose={this.state.close}
+          onClose={this.handleClose}
           fullWidth
           maxWidth="sm"
-        ></Dialog>
-        <MyButton onClick={this.handleClose} ctip="Close">
-          <CloseButton />
-        </MyButton>
-        <DialogTitle>Post A Scream</DialogTitle>
-        <DialogContent>
-          <form onSubmit={this.handleSubmit}>
-            <TextField
-              name="body"
-              type="text"
-              label="Scream"
-              multiline
-              rows="3"
-              placeholder="Scream at your fellow apes"
-              error={errors.body ? true : false}
-              helperText={errors.body}
-              className={classes.textField}
-              onChange={this.handleChange}
-              fullWidth
-            ></TextField>
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              className={classes.submitButton}
-              disabled={loading}
-            >
-              <CirclarProgress
-                size={30}
-                className={classes.progressSpinner}
-              ></CirclarProgress>
-            </Button>
-          </form>
-        </DialogContent>
+        >
+          <MyButton
+            tip="Close"
+            onClick={this.handleClose}
+            tipClassName={classes.closeButton}
+          >
+            <CloseIcon />
+          </MyButton>
+          <DialogTitle>Post a new scream</DialogTitle>
+          <DialogContent>
+            <form onSubmit={this.handleSubmit}>
+              <TextField
+                name="body"
+                type="text"
+                label="Scream"
+                multiline
+                rows="3"
+                placeholder="Scream at your fellow hunters"
+                error={errors.body ? true : false}
+                helperText={errors.body}
+                value={this.state.body}
+                className={classes.textField}
+                onChange={this.handleChange}
+                fullWidth
+              />
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                className={classes.submitButton}
+                disabled={loading}
+              >
+                Submit
+                {loading && (
+                  <CircularProgress
+                    size={30}
+                    className={classes.progressSpinner}
+                  />
+                )}
+              </Button>
+            </form>
+          </DialogContent>
+        </Dialog>
       </Fragment>
     );
   }
 }
 
-const mapStateToProps = (state) = {
-  UI: state.UI,
+const mapStateToProps = (state) => ({
+  ui: state.ui,
 });
 
 export default connect(mapStateToProps, { postScream })(

@@ -9,6 +9,7 @@ import jwtDecode from "jwt-decode";
 import home from "./views/home";
 import login from "./views/login";
 import signUp from "./views/signUp";
+import user from "./views/user";
 //Components
 import AuthRoute from "./utils/AuthRoute";
 import Navbar from "./components/navBar";
@@ -28,8 +29,8 @@ if (token) {
     window.location.href = "/login";
   } else {
     store.dispatch({ type: SET_AUTHENTICATED });
-    Axios.defaults.headers.common['Authorization']= token
-    store.dispatch(getUserData())
+    Axios.defaults.headers.common["Authorization"] = token;
+    store.dispatch(getUserData());
   }
 }
 
@@ -40,21 +41,16 @@ class App extends Component {
         <Provider store={store}>
           <div id="component-container" className="App">
             <Router>
-              <Navbar/>
+              <Navbar />
               <div color="Primary">
                 <Switch>
-                  <Route exact path="/" component={home}/>
-                  <Route exact path="/home" component={home}/>
-                  <AuthRoute
-                    exact
-                    path="/login"
-                    component={login}
-                  />
-                  <AuthRoute
-                    exact
-                    path="/signup"
-                    component={signUp}                    
-                  />
+                  <Route exact path="/" component={home} />
+                  <Route exact path="/home" component={home} />
+
+                  <AuthRoute exact path="/login" component={login} />
+                  <AuthRoute exact path="/signup" component={signUp} />
+
+                  <Route exact path="/user/:userName" component={user} />
                 </Switch>
               </div>
             </Router>
